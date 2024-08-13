@@ -4,6 +4,8 @@ import os
 
 def lambda_handler(event, context):
     user = event['request']['userAttributes']
+    print('userAttributes')
+    print(user)
 
     user_display_name = user['name']
     user_email = user['email']
@@ -16,14 +18,16 @@ def lambda_handler(event, context):
                 email,
                 handle, 
                 cognito_user_id) 
-            VALUES(
-                '{user_display_name}', 
-                '{user_email}',
-                '{user_handle}',
-                '{user_cognito_id}')
+            VALUES(%s,%s,%s,%s)
         """
         conn = psycopg2.connect(os.getenv('CONNECTION_URL'))
         cur = conn.cursor()
+        params = [
+            user_display_name,
+            user_email,
+            user_handle,
+            user_cognito_id
+        ]
         cur.execute(sql)
         conn.commit()
 
