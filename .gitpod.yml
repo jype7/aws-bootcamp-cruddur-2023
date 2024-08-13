@@ -21,6 +21,9 @@ tasks:
     command: |
       cd frontend-react-js
       npm i
+  - name: docker-login
+    init: |
+      docker login -u $DOCKER_USER -p $DOCKER_PW
 vscode:
   extensions:
     - 42Crunch.vscode-openapi
